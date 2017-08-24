@@ -13,9 +13,13 @@ export default (options) => {
     }
 
     if (request.status === 200 && !request._hasError && options.success) {
-      options.success(JSON.parse(request.responseText));
+      try {
+        options.success(JSON.parse(request.responseText));
+      } catch (e) {
+        options.error(request, e);
+      }
     } else if (options.error) {
-       options.error(request, request._response);
+      options.error(request, request._response);
     }
   };
 
