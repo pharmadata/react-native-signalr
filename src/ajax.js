@@ -7,8 +7,9 @@ const qs = (data) => {
 
 export default (options) => {
   const request = new XMLHttpRequest();
+  let aborted = false;
   request.onreadystatechange = () => {
-    if (request.readyState !== 4) {
+    if (request.readyState !== 4 || aborted) {
       return;
     }
 
@@ -30,6 +31,7 @@ export default (options) => {
 
   return {
     abort: (reason) => {
+      aborted = true;
       return request.abort(reason);
     }
   };
